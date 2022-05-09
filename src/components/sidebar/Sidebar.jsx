@@ -14,11 +14,17 @@ import {
 } from "./styles";
 import logo from "../../assets/jeep1.svg";
 import { useLocation } from "react-router-dom";
-import { HiHome, HiPlus, HiAdjustments, HiMenu } from "react-icons/hi";
+import {
+  HiHome,
+  HiPlus,
+  HiAdjustments,
+  HiMenu,
+  HiOutlineX,
+} from "react-icons/hi";
 
 export default function Sidebar() {
   const { pathname } = useLocation();
-  const [isNavOpen, setIsNavOpen] = useState(true);
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
   const toggleNav = () => setIsNavOpen(!isNavOpen);
 
@@ -41,7 +47,9 @@ export default function Sidebar() {
       <SDevider />
 
       <SNav open={isNavOpen}>
-        <SButtonClose onClick={toggleNav}>X</SButtonClose>
+        <SButtonClose onClick={toggleNav}>
+          <HiOutlineX />
+        </SButtonClose>
         {linkArray.map(({ label, to, icon }, index) => (
           <SNavLink
             to={to}

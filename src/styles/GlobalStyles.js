@@ -18,5 +18,8 @@ export const GlobalStyled = createGlobalStyle`
     button {
         cursor: pointer;
     }
+    button::-moz-user-focus {
+        background-color:transparent;
+    }
 
 `;

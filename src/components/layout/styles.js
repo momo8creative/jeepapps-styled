@@ -6,7 +6,7 @@ export const SLayout = styled.div`
   flex-direction: row;
   min-height: 100vh;
 
-  @media (max-width: ${v.smWith}) {
+  @media (max-width: ${v.mdWith}) {
     flex-direction: column;
   }
 `;
