@@ -1,65 +1,92 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   SBrand,
-  SBrandLogo,
-  SBrandText,
-  SButton,
   SButtonClose,
+  SButtonNav,
   SDevider,
-  SLinkIcon,
-  SLinkLabel,
-  SNav,
+  SMenu,
   SNavLink,
+  SNavMenu,
   SSidebar,
-} from "./styles";
-import logo from "../../assets/jeep1.svg";
-import { useLocation } from "react-router-dom";
-import { HiHome, HiPlus, HiAdjustments, HiMenu } from "react-icons/hi";
+  STheme,
+  SThemeLabel,
+  SThemeToggle,
+} from "./SidebarStyles";
+import {
+  HiMenu,
+  HiHome,
+  HiPlusSm,
+  HiOutlineX,
+  HiDatabase,
+  HiUser,
+} from "react-icons/hi";
+import { useThemeContext } from "../../contexts/ThemeContext";
 
 export default function Sidebar() {
-  const { pathname } = useLocation();
-  const [isNavOpen, setIsNavOpen] = useState(true);
+  const [showNav, setShowNav] = useState(false);
+  const [isLight, setIsLight] = useState(true);
 
-  const toggleNav = () => setIsNavOpen(!isNavOpen);
+  const { toggleTheme, localTheme } = useThemeContext();
 
-  //   useEffect(() => {
-  //     toggleNav();
-  //   }, [pathname]);
-  //
+  const toggleNav = () => setShowNav(!showNav);
+
+  const onClickToggle = () => {
+    setIsLight(!isLight);
+    toggleTheme();
+  };
+
   return (
     <SSidebar>
-      <SBrand>
-        <SBrandLogo>
-          <img src={logo} alt="logo" />
-        </SBrandLogo>
-        <SBrandText>Jeep Apps</SBrandText>
-        <SButton onClick={toggleNav}>
-          <HiMenu />
-        </SButton>
-      </SBrand>
+      <SButtonNav onClick={toggleNav}>
+        <HiMenu />
+      </SButtonNav>
+
+      <SBrand to="/">Jeep Apps</SBrand>
 
       <SDevider />
 
-      <SNav open={isNavOpen}>
-        <SButtonClose onClick={toggleNav}>X</SButtonClose>
-        {linkArray.map(({ label, to, icon }, index) => (
-          <SNavLink
-            to={to}
-            key={index}
-            active={pathname == to ? "true" : null}
-            onClick={toggleNav}
-          >
-            <SLinkIcon>{icon}</SLinkIcon>
-            <SLinkLabel>{label}</SLinkLabel>
-          </SNavLink>
-        ))}
-      </SNav>
+      <SNavMenu open={showNav}>
+        <SButtonClose onClick={toggleNav}>
+          <HiOutlineX />
+        </SButtonClose>
+        <SMenu>
+          {menuArr.map(({ label, to, icon }, index) => (
+            <SNavLink to={to} key={index} onClick={toggleNav}>
+              {icon}
+              <span>{label}</span>
+            </SNavLink>
+          ))}
+
+          <SDevider />
+
+          {menuAdminArr.map(({ label, to, icon }, index) => (
+            <SNavLink to={to} key={index} onClick={toggleNav}>
+              {icon}
+              <span>{label}</span>
+            </SNavLink>
+          ))}
+        </SMenu>
+      </SNavMenu>
+
+      <SDevider />
+
+      <STheme>
+        <SThemeLabel>
+          Tema {localTheme == "light" ? "Terang" : "Gelap"}
+        </SThemeLabel>
+        <SThemeToggle onClick={onClickToggle} light={isLight}></SThemeToggle>
+      </STheme>
     </SSidebar>
   );
 }
 
-const linkArray = [
+const menuArr = [
   { label: "Beranda", to: "/", icon: <HiHome /> },
-  { label: "Tambah Pemakaian", to: "/tambah-pemakaian", icon: <HiPlus /> },
-  { label: "Setting", to: "/setting", icon: <HiAdjustments /> },
+  { label: "Tambah Pemakaian", to: "/tambah-pemakaian", icon: <HiPlusSm /> },
+  { label: "Pemakaian", to: "/pemakaian", icon: <HiDatabase /> },
+];
+
+const menuAdminArr = [
+  { label: "Pengguna", to: "/", icon: <HiUser /> },
+  { label: "Pengguna", to: "/", icon: <HiUser /> },
 ];
